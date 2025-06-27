@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-// ユーザー - システムの利用者
+// システムの利用者
 type User struct {
 	ID           string
 	Username     string
@@ -13,13 +13,13 @@ type User struct {
 	RelatedUsers []RelatedUser
 }
 
-// 関係があるユーザー - フレンド申請のステータス管理
+// フレンド申請のステータス管理
 type RelatedUser struct {
 	ID     string
 	Status RelatedUserStatus
 }
 
-// モーニングコール - アラーム情報
+// アラーム情報
 type MorningCall struct {
 	ID         string
 	SenderID   string
