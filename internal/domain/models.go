@@ -6,7 +6,7 @@ import (
 
 // システムの利用者
 type User struct {
-	ID           string
+	ID           UserID
 	Username     string
 	Email        string
 	MorningCalls []MorningCall
@@ -15,13 +15,15 @@ type User struct {
 
 // フレンド申請のステータス管理
 type RelatedUser struct {
-	ID     string
-	Status RelatedUserStatus
+	ID       UserID
+	Username string
+	Email    string
+	Status   RelatedUserStatus
 }
 
 // アラーム情報
 type MorningCall struct {
-	ID         string
+	ID         MorningCallID
 	SenderID   string
 	ReceiverID string
 	Time       time.Time
@@ -46,3 +48,12 @@ const (
 	MorningCallStatusCompleted MorningCallStatus = "completed"
 	MorningCallStatusFailed    MorningCallStatus = "failed"
 )
+
+func (rcv *User) CanAcceptMorningCall(friendID UserID) NGReason {
+	for _, ru := range rcv.RelatedUsers {
+		if ru.ID == friendID {
+			return ""
+		}
+	}
+	return "フレンドではありません。"
+}
