@@ -1,9 +1,10 @@
-package infrastructure
+package inmemory
 
 import (
 	"context"
 	"fmt"
 	"morning-call/internal/domain"
+	"morning-call/internal/repository"
 	"sync"
 )
 
@@ -12,7 +13,7 @@ type inMemoryMorningCallRepository struct {
 	morningCalls map[domain.MorningCallID]*domain.MorningCall
 }
 
-func NewInMemoryMorningCallRepository() *inMemoryMorningCallRepository {
+func NewInMemoryMorningCallRepository() repository.MorningCallRepository {
 	return &inMemoryMorningCallRepository{
 		morningCalls: make(map[domain.MorningCallID]*domain.MorningCall),
 	}
@@ -65,7 +66,7 @@ func (r *inMemoryMorningCallRepository) Delete(ctx context.Context, id domain.Mo
 	return nil
 }
 
-func (r *inMemoryMorningCallRepository) ListBySender(ctx context.Context, senderID domain.UserID) ([]*domain.MorningCall, error) {
+func (r *inMemoryMorningCallRepository) ListBySenderID(ctx context.Context, senderID domain.UserID) ([]*domain.MorningCall, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 
@@ -78,7 +79,7 @@ func (r *inMemoryMorningCallRepository) ListBySender(ctx context.Context, sender
 	return result, nil
 }
 
-func (r *inMemoryMorningCallRepository) ListByReceiver(ctx context.Context, receiverID domain.UserID) ([]*domain.MorningCall, error) {
+func (r *inMemoryMorningCallRepository) ListByReceiverID(ctx context.Context, receiverID domain.UserID) ([]*domain.MorningCall, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 

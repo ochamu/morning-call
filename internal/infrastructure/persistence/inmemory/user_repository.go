@@ -1,4 +1,4 @@
-package infrastructure
+package inmemory
 
 import (
 	"context"
@@ -41,5 +41,40 @@ func (r *inMemoryUserRepository) Create(ctx context.Context, user *domain.User) 
 		return fmt.Errorf("user already exists: %s", user.ID)
 	}
 	r.users[user.ID] = user
+	return nil
+}
+
+func (r *inMemoryUserRepository) FindByEmail(ctx context.Context, email string) (*domain.User, error) {
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+
+	for _, user := range r.users {
+		if user.Email == email {
+			return user, nil
+		}
+	}
+	return nil, fmt.Errorf("user not found with email: %s", email)
+}
+
+func (r *inMemoryUserRepository) Update(ctx context.Context, user *domain.User) error {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
+	if _, ok := r.users[user.ID]; !ok {
+		return fmt.Errorf("user not found: %s", user.ID)
+	}
+	r.users[user.ID] = user
+	return nil
+}
+
+func (r *inMemoryUserRepository) UpdateRelatedUsers(ctx context.Context, userID domain.UserID, relatedUsers []domain.RelatedUser) error {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
+	user, ok := r.users[userID]
+	if !ok {
+		return fmt.Errorf("user not found: %s", userID)
+	}
+	user.RelatedUsers = relatedUsers
 	return nil
 }
