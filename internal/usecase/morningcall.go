@@ -12,7 +12,7 @@ type morningCallUsecase struct {
 	userRepo        repository.UserRepository
 }
 
-func NewMorningCallRepository(morningCallRepo repository.MorningCallRepository, userRepo repository.UserRepository) *morningCallUsecase {
+func NewMorningCallUsecase(morningCallRepo repository.MorningCallRepository, userRepo repository.UserRepository) MorningCallUsecase {
 	return &morningCallUsecase{
 		morningCallRepo: morningCallRepo,
 		userRepo:        userRepo,
