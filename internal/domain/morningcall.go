@@ -7,8 +7,8 @@ import (
 // アラーム情報
 type MorningCall struct {
 	ID         MorningCallID
-	SenderID   string
-	ReceiverID string
+	SenderID   UserID
+	ReceiverID UserID
 	Time       time.Time
 	Message    string
 	Status     MorningCallStatus

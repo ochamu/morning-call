@@ -5,17 +5,17 @@ import (
 )
 
 // IsSender checks if the specified user is the sender of this morning call
-func (rcv *MorningCall) IsSender(userID string) bool {
+func (rcv *MorningCall) IsSender(userID UserID) bool {
 	return rcv.SenderID == userID
 }
 
 // IsReceiver checks if the specified user is the receiver of this morning call
-func (rcv *MorningCall) IsReceiver(userID string) bool {
+func (rcv *MorningCall) IsReceiver(userID UserID) bool {
 	return rcv.ReceiverID == userID
 }
 
 // CanUpdate checks if the morning call can be updated
-func (rcv *MorningCall) CanUpdate(userID string) NGReason {
+func (rcv *MorningCall) CanUpdate(userID UserID) NGReason {
 	// 送信者のみが更新可能
 	if !rcv.IsSender(userID) {
 		return NGReasonNotSender
@@ -35,7 +35,7 @@ func (rcv *MorningCall) CanUpdate(userID string) NGReason {
 }
 
 // CanDelete checks if the morning call can be deleted
-func (rcv *MorningCall) CanDelete(userID string) NGReason {
+func (rcv *MorningCall) CanDelete(userID UserID) NGReason {
 	// 送信者または受信者が削除可能
 	if !rcv.IsSender(userID) && !rcv.IsReceiver(userID) {
 		return NGReasonNoPermission
