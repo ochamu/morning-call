@@ -5,12 +5,12 @@ import (
 	"net/http"
 
 	"morning-call/internal/handler"
-	"morning-call/internal/infrastructure"
+	"morning-call/internal/infrastructure/persistence/inmemory"
 	"morning-call/internal/usecase"
 )
 
 func main() {
-	userRepo := infrastructure.NewInMemoryUserRepository()
+	userRepo := inmemory.NewInMemoryUserRepository()
 	userUsecase := usecase.NewUserUsecase(userRepo)
 	userHandler := handler.NewUserHandler(userUsecase)
 
