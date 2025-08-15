@@ -9,16 +9,16 @@ import (
 
 type inMemoryMorningCallRepository struct {
 	mu           sync.RWMutex
-	morningCalls map[string]*domain.MorningCall
+	morningCalls map[domain.MorningCallID]*domain.MorningCall
 }
 
 func NewInMemoryMorningCallRepository() *inMemoryMorningCallRepository {
 	return &inMemoryMorningCallRepository{
-		morningCalls: make(map[string]*domain.MorningCall),
+		morningCalls: make(map[domain.MorningCallID]*domain.MorningCall),
 	}
 }
 
-func (r *inMemoryMorningCallRepository) FindByID(ctx context.Context, id string) (*domain.MorningCall, error) {
+func (r *inMemoryMorningCallRepository) FindByID(ctx context.Context, id domain.MorningCallID) (*domain.MorningCall, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 
@@ -37,7 +37,7 @@ func (r *inMemoryMorningCallRepository) Save(ctx context.Context, morningCall *d
 		return fmt.Errorf("morning call ID is required")
 	}
 
-	r.morningCalls[string(morningCall.ID)] = morningCall
+	r.morningCalls[morningCall.ID] = morningCall
 	return nil
 }
 
@@ -45,15 +45,15 @@ func (r *inMemoryMorningCallRepository) Update(ctx context.Context, morningCall 
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
-	if _, ok := r.morningCalls[string(morningCall.ID)]; !ok {
+	if _, ok := r.morningCalls[morningCall.ID]; !ok {
 		return fmt.Errorf("morning call not found: %s", morningCall.ID)
 	}
 
-	r.morningCalls[string(morningCall.ID)] = morningCall
+	r.morningCalls[morningCall.ID] = morningCall
 	return nil
 }
 
-func (r *inMemoryMorningCallRepository) Delete(ctx context.Context, id string) error {
+func (r *inMemoryMorningCallRepository) Delete(ctx context.Context, id domain.MorningCallID) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
@@ -65,7 +65,7 @@ func (r *inMemoryMorningCallRepository) Delete(ctx context.Context, id string) e
 	return nil
 }
 
-func (r *inMemoryMorningCallRepository) ListBySender(ctx context.Context, senderID string) ([]*domain.MorningCall, error) {
+func (r *inMemoryMorningCallRepository) ListBySender(ctx context.Context, senderID domain.UserID) ([]*domain.MorningCall, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 
@@ -78,7 +78,7 @@ func (r *inMemoryMorningCallRepository) ListBySender(ctx context.Context, sender
 	return result, nil
 }
 
-func (r *inMemoryMorningCallRepository) ListByReceiver(ctx context.Context, receiverID string) ([]*domain.MorningCall, error) {
+func (r *inMemoryMorningCallRepository) ListByReceiver(ctx context.Context, receiverID domain.UserID) ([]*domain.MorningCall, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 

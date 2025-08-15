@@ -20,7 +20,7 @@ func NewMorningCallRepository(morningCallRepo repository.MorningCallRepository, 
 }
 
 func (rcv *morningCallUsecase) SaveFriendMorningCall(ctx context.Context, userID, friendID domain.UserID, morningCall *domain.MorningCall) error {
-	friend, err := rcv.userRepo.FindByID(ctx, string(friendID))
+	friend, err := rcv.userRepo.FindByID(ctx, friendID)
 	if err != nil {
 		return err
 	}

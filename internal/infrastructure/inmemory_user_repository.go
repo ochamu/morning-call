@@ -12,17 +12,17 @@ import (
 // inMemoryUserRepository は UserRepository のインメモリ実装です
 type inMemoryUserRepository struct {
 	mu    sync.RWMutex
-	users map[string]*domain.User
+	users map[domain.UserID]*domain.User
 }
 
 // NewInMemoryUserRepository は新しい inMemoryUserRepository を生成します
 func NewInMemoryUserRepository() repository.UserRepository {
 	return &inMemoryUserRepository{
-		users: make(map[string]*domain.User),
+		users: make(map[domain.UserID]*domain.User),
 	}
 }
 
-func (r *inMemoryUserRepository) FindByID(ctx context.Context, id string) (*domain.User, error) {
+func (r *inMemoryUserRepository) FindByID(ctx context.Context, id domain.UserID) (*domain.User, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 
