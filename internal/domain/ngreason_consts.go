@@ -33,4 +33,10 @@ const (
 	NGReasonMessageTooLong   NGReason = "メッセージが長すぎます。"
 	NGReasonEmptyMessage     NGReason = "メッセージが空です。"
 	NGReasonInvalidParameter NGReason = "無効なパラメータです。"
+	
+	// Relationship関連のNGReason
+	NGReasonInvalidRelationshipStatus NGReason = "無効な関係ステータスです。"
+	NGReasonInvalidStatusTransition   NGReason = "無効なステータス遷移です。"
+	NGReasonRequestNotFound           NGReason = "申請が見つかりません。"
+	NGReasonCannotBlockSelf           NGReason = "自分自身をブロックすることはできません。"
 )
