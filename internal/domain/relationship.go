@@ -83,9 +83,14 @@ func (r *Relationship) InvolvesUser(userID UserID) bool {
 }
 
 // GetOtherUserID returns the ID of the other user in the relationship
+// Returns empty UserID if the provided user is not involved in the relationship
 func (r *Relationship) GetOtherUserID(userID UserID) UserID {
 	if r.RequesterID == userID {
 		return r.ReceiverID
 	}
-	return r.RequesterID
+	if r.ReceiverID == userID {
+		return r.RequesterID
+	}
+	// User not involved in this relationship
+	return ""
 }
